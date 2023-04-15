@@ -11,7 +11,6 @@ import { v4 as uuid } from 'uuid'
 import { Nft__factory } from '../../types/ethers-contracts'
 
 const gtMaru = localFont({ src: '../assets/GT-Maru-Mega-Midi.otf' })
-const EXAMPLE_STR = 'uwulink{"method":"eth_sendTransaction","value":{"to":"0x3bEE7CD3Bbd61B1b6681E35c3bDe5A588d81c30a","from":"0x3bEE7CD3Bbd61B1b6681E35c3bDe5A588d81c30a","data":"0x","value":0},"chainId":1,"dapp":{"name":"Uwulink Example","url":"www.uwulink.com","icon":""}}'
 
 const Home: NextPage = () => {
 
@@ -140,10 +139,24 @@ function MintModal({ onClose }: { onClose: () => void }) {
   return (
     <div className={styles.mintModal}>
       <button className={styles.exitButton} onClick={onClose}>+</button>
-      <div>Scan code to mint NFT </div>
+      <div className={styles.mintModalTitle}>Scan code to mint NFT </div>
       {status === 'pending' && <div style={{ height: 256, width: 256 }}>Pending</div>}
       {status === 'success' && <div style={{ height: 256, width: 256 }}>Success</div>}
       {!status && <QRCode size={256} value={qrCodeValue} fgColor="#AA83FC" />}
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center gap-0">
+          <p className='-mb-2'>🥺</p>
+          <p>👉👈</p>
+        </div>
+        <div className='flex flex-row items-center justify-center'>
+          <p className="text-sm text-gray-500">
+            Powered by
+            <span className={classNames(gtMaru.className, "text-lg")} style={{ color: "#F356EF" }}>
+              {" "}UwU Link
+            </span>
+          </p>
+        </div>
+      </div>
     </div>
   )
 }
