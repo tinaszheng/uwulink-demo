@@ -20,3 +20,25 @@
 .tryItOutButton {
   border-color: white;
 }
+
+.mintModal {
+  background-color: white;
+  padding: 48px;
+  border-radius: 20px;
+  color: black;
+  gap: 50px;
+
+  position: relative;
+}
+
+.exitButton {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+
+  background: none;
+  border: none;
+  transform: rotate(45deg);
+  color: rgba(37, 49, 76, 0.3);
+  font-size: 24px;
+}
