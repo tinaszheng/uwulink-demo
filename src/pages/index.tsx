@@ -69,7 +69,7 @@ function MainContent({ openModal }: { openModal: () => void }) {
 
 const NFT_ADDRESS = '0x5A26dEe404E5b178374865F4D6091C072e77b458'
 const PROVIDER = new providers.InfuraProvider(1, '8de2a7bb74884bf4b186765e3a85c0f7')
-const WEBHOOK_ENDPOINT = 'http://167.172.101.13'
+const WEBHOOK_ENDPOINT = 'https://uwulink.xyz'
 const NFTContract = Nft__factory.connect(NFT_ADDRESS, PROVIDER);
 
 function MintModal({ onClose }: { onClose: () => void }) {
