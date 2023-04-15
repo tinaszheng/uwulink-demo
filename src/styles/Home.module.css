@@ -28,6 +28,10 @@
   color: black;
   gap: 50px;
 
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  text-align: center;
   position: relative;
 }
 
