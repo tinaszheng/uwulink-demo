@@ -27,6 +27,10 @@ a {
   box-sizing: border-box;
 }
 
+button {
+  cursor: pointer;
+}
+
 html {
   height: -webkit-fill-available;
 }
