@@ -23,16 +23,21 @@
 
 .mintModal {
   background-color: white;
-  padding: 48px;
+  padding: 48px 48px 24px 48px;
   border-radius: 20px;
   color: black;
-  gap: 50px;
+  gap: 25px;
 
   display: flex;
   flex-flow: column;
   align-items: center;
   text-align: center;
   position: relative;
+}
+
+.mintModalTitle {
+  font-weight: 500;
+  font-size: 18px;
 }
 
 .exitButton {
