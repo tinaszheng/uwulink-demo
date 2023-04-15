@@ -2,9 +2,13 @@ import type { NextPage } from 'next'
 import localFont from 'next/font/local'
 import classNames from 'classnames'
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from '@/styles/Home.module.css'
 import QRCode from 'react-qr-code'
+import { Contract, providers } from 'ethers'
+import NFTAbi from '@/stuff/nft.json'
+import { v4 as uuid } from 'uuid'
+import { Nft__factory } from '../../types/ethers-contracts'
 
 const gtMaru = localFont({ src: '../assets/GT-Maru-Mega-Midi.otf' })
 const EXAMPLE_STR = 'uwulink{"method":"eth_sendTransaction","value":{"to":"0x3bEE7CD3Bbd61B1b6681E35c3bDe5A588d81c30a","from":"0x3bEE7CD3Bbd61B1b6681E35c3bDe5A588d81c30a","data":"0x","value":0},"chainId":1,"dapp":{"name":"Uwulink Example","url":"www.uwulink.com","icon":""}}'
@@ -43,6 +47,9 @@ function MainContent({ openModal }: { openModal: () => void }) {
           <button onClick={openModal} className='border border-white rounded-2xl bg-white bg-opacity-20 hover:bg-opacity-40 px-8 py-2 transition-all duration-200'>
             <p className='text-white text-xl'>Try it out</p>
           </button>
+          <span className='text-7xl'>
+            👈
+          </span>
         </div>
 
       </div>
@@ -61,17 +68,82 @@ function MainContent({ openModal }: { openModal: () => void }) {
   )
 }
 
+const NFT_ADDRESS = '0x5A26dEe404E5b178374865F4D6091C072e77b458'
+const PROVIDER = new providers.InfuraProvider(1, '8de2a7bb74884bf4b186765e3a85c0f7')
+const WEBHOOK_ENDPOINT = 'http://167.172.101.13'
+const NFTContract = Nft__factory.connect(NFT_ADDRESS, PROVIDER);
+
 function MintModal({ onClose }: { onClose: () => void }) {
+  const id = useRef(uuid())
+  const [qrCodeValue, setQrCodeValue] = useState<string>()
+  const [txHash, setTxHash] = useState<string>()
+  const [status, setStatus] = useState<'pending' | 'success'>()
+
+  const webhook = `${WEBHOOK_ENDPOINT}/${id.current}`
 
   useEffect(() => {
-    // start interval for querying for status
+    async function setData() {
+      const tx = await NFTContract.populateTransaction.mint()
+      const txObject = { to: tx.to, data: tx.data, value: tx.value }
+      const uwuLinkDetails = {
+        method: "eth_sendTransaction",
+        value: txObject,
+        chainId: 1,
+        dapp: {
+          name: "Uwu NFT Mint",
+          url: 'https://uwulink-demo.vercel.app/',
+          icon: '',
+        },
+        webhook,
+      }
+
+      setQrCodeValue(`uwulink${JSON.stringify(uwuLinkDetails)}`)
+    }
+
+    setData()
   }, [])
+
+  useEffect(() => {
+    const updater = setInterval(async () => {
+      try {
+        const res = (await (await fetch(webhook)).json())
+        if (res.data.data) {
+          setTxHash(res.data.data)
+          clearInterval(updater)
+        }
+      } catch (_) { }
+    }, 1000)
+
+    return () => clearInterval(updater)
+  }, [])
+
+  useEffect(() => {
+    const updater = setInterval(async () => {
+      if (!txHash) return
+
+      try {
+        const receipt = await PROVIDER.getTransactionReceipt(txHash)
+        if (!receipt || receipt?.status === 0) {
+          setStatus('pending')
+        } else if (receipt?.status === 1) {
+          setStatus('success')
+          clearInterval(updater)
+        }
+      } catch (_) { }
+    }, 500)
+
+    return () => clearInterval(updater)
+  }, [txHash])
+
+  if (!qrCodeValue) return null
 
   return (
     <div className={styles.mintModal}>
       <button className={styles.exitButton} onClick={onClose}>+</button>
       <div>Scan code to mint NFT </div>
-      <QRCode size={256} value={EXAMPLE_STR} fgColor="#AA83FC" />
+      {status === 'pending' && <div style={{ height: 256, width: 256 }}>Pending</div>}
+      {status === 'success' && <div style={{ height: 256, width: 256 }}>Success</div>}
+      {!status && <QRCode size={256} value={qrCodeValue} fgColor="#AA83FC" />}
     </div>
   )
 }
