@@ -139,10 +139,19 @@ function MintModal({ onClose }: { onClose: () => void }) {
   return (
     <div className={styles.mintModal}>
       <button className={styles.exitButton} onClick={onClose}>+</button>
-      <div className={styles.mintModalTitle}>Scan code to mint NFT </div>
-      {status === 'pending' && <div style={{ height: 256, width: 256 }}>Pending</div>}
-      {status === 'success' && <div style={{ height: 256, width: 256 }}>Success</div>}
-      {!status && <QRCode size={256} value={qrCodeValue} fgColor="#AA83FC" />}
+      <div className={styles.mintModalTitle}>
+        {status === 'pending' ? "Minting..." : status === 'success' ? "Minted" : "Scan code to mint NFT"}
+      </div>
+      <div className='min-h-[256] min-w-[256]'>
+        {status === 'pending' && (
+          <div className='animate-spin'>
+            <Spinner />
+          </div>
+        )
+        }
+        {status === 'success' && <Check />}
+        {!status && <QRCode size={256} value={qrCodeValue} fgColor="#AA83FC" />}
+      </div>
       <div className="flex flex-col items-center justify-center">
         <div className="flex flex-col items-center justify-center gap-0">
           <p className='-mb-2'>🥺</p>
@@ -161,3 +170,21 @@ function MintModal({ onClose }: { onClose: () => void }) {
   )
 }
 export default Home
+
+function Spinner() {
+  return (
+    <svg width="256" height="256" viewBox="0 0 297 296" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path opacity="0.1" d="M296.104 148C296.104 229.52 230.019 295.604 148.5 295.604C66.9804 295.604 0.895752 229.52 0.895752 148C0.895752 66.4805 66.9804 0.395844 148.5 0.395844C230.019 0.395844 296.104 66.4805 296.104 148ZM30.4166 148C30.4166 213.216 83.2843 266.083 148.5 266.083C213.716 266.083 266.583 213.216 266.583 148C266.583 82.7844 213.716 29.9167 148.5 29.9167C83.2843 29.9167 30.4166 82.7844 30.4166 148Z" fill="#5D6785" />
+      <path d="M281.344 148C289.496 148 296.181 141.375 295.367 133.264C293.929 118.936 290.399 104.868 284.868 91.5143C277.451 73.6062 266.578 57.3344 252.872 43.6281C239.165 29.9218 222.894 19.0493 204.986 11.6315C191.632 6.10047 177.564 2.57092 163.236 1.13325C155.125 0.319405 148.5 7.00431 148.5 15.1563V15.1563C148.5 23.3082 155.134 29.8216 163.222 30.838C173.67 32.1509 183.919 34.8584 193.688 38.9052C208.015 44.8395 221.032 53.5374 231.997 64.5025C242.962 75.4675 251.66 88.4849 257.595 102.811C261.641 112.581 264.349 122.829 265.662 133.278C266.678 141.366 273.192 148 281.344 148V148Z" fill="#F356EF" />
+    </svg>
+  )
+}
+
+function Check() {
+  return (
+    <svg width="256" height="256" viewBox="0 0 285 285" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6.50903" y="6.99086" width="271.982" height="271.982" rx="135.991" stroke="#40B66B" stroke-width="12" stroke-linecap="round" />
+      <path d="M199.87 99.9542L120.986 178.838L85.1299 142.982" stroke="#40B66B" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  )
+}
