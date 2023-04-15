@@ -15,13 +15,13 @@ const Home: NextPage = () => {
 
   return (
     <>
-    <Head>
+      <Head>
         <title>Uwulink</title>
         <meta name="description" content="SAY BYE TO WALLETCONNECT ?" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-    <div className="h-screen flex flex-col items-center justify-center gap-7">
+      <div className="h-screen flex flex-col items-center justify-center gap-7">
         {!modalOpen && <MainContent openModal={() => setModalOpen(true)} />}
         {modalOpen && <MintModal onClose={() => setModalOpen(false)} />}
       </div>
@@ -43,11 +43,8 @@ function MainContent({ openModal }: { openModal: () => void }) {
           <button onClick={openModal} className='border border-white rounded-2xl bg-white bg-opacity-20 hover:bg-opacity-40 px-8 py-2 transition-all duration-200'>
             <p className='text-white text-xl'>Try it out</p>
           </button>
-          <span className='text-7xl'>
-            👈
-          </span>
         </div>
-       
+
       </div>
       <h1 className={classNames(gtMaru.className, "text-8xl py-3 text-white")}>
         UwU Link
@@ -65,7 +62,7 @@ function MainContent({ openModal }: { openModal: () => void }) {
 }
 
 function MintModal({ onClose }: { onClose: () => void }) {
-  
+
   useEffect(() => {
     // start interval for querying for status
   }, [])
