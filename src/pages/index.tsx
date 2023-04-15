@@ -43,6 +43,9 @@ function MainContent({ openModal }: { openModal: () => void }) {
           <button onClick={openModal} className='border border-white rounded-2xl bg-white bg-opacity-20 hover:bg-opacity-40 px-8 py-2 transition-all duration-200'>
             <p className='text-white text-xl'>Try it out</p>
           </button>
+          <span className='text-7xl'>
+            👈
+          </span>
         </div>
 
       </div>
@@ -72,6 +75,20 @@ function MintModal({ onClose }: { onClose: () => void }) {
       <button className={styles.exitButton} onClick={onClose}>+</button>
       <div>Scan code to mint NFT </div>
       <QRCode size={256} value={EXAMPLE_STR} fgColor="#AA83FC" />
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center gap-0">
+          <p className='-mb-2'>🥺</p>
+          <p>👉👈</p>
+        </div>
+        <div className='flex flex-row items-center justify-center'>
+          <p className="text-sm text-gray-500">
+            Powered by
+            <span className={classNames(gtMaru.className, "text-lg")} style={{ color: "#F356EF" }}>
+              {" "}UwU Link
+            </span>
+          </p>
+        </div>
+      </div>
     </div>
   )
 }
